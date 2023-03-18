@@ -1,0 +1,115 @@
+//2D Transalation
+#include<stdio.h>
+#include<conio.h>
+#include<graphics.h>
+void main()
+{
+int gd=DETECT , gm ;
+int x3,y3,x1,y1,x2,y2,tx,ty;
+clrscr();
+initgraph(&gd,&gm , "c:\\turboc3\\bgi");
+printf("\n enter first coordinate : ");
+scanf("%d%d",&x1,&y1);
+printf("\n enter second coordinate: ");
+scanf("%d%d",&x2,&y2);
+printf("\n enter third coordinate: ");
+scanf("%d%d",&x3,&y3);
+line(x1,y1,x2,y2);
+line(x2,y2,x3,y3);
+line(x3,y3,x1,y1);
+printf("\n enter translation vectors : ");
+scanf("%d%d",&tx,&ty);
+setcolor(BLUE);
+line(x1+tx,y1+ty,x2+tx,y2+ty);
+line(x2+tx,y2+ty,x3+tx,y3+ty);
+line(x3+tx,y3+ty,x1+tx,y1+ty);
+getch();
+closegraph();
+}
+
+//2D Rotation
+#include<stdio.h>
+#include<conio.h>
+#include<graphics.h>
+#include<math.h>
+void main()
+{
+ int gd=0,gm,x1,y1,x2,y2,x3,y3;
+ double s,c, angle;
+ initgraph(&gd, &gm, "C:\\TURBOC3\\BGI");
+ setcolor(RED);
+ printf("Enter coordinates of triangle: ");
+ scanf("%d%d%d%d%d%d",&x1,&y1,&x2,&y2, &x3, &y3);
+ setbkcolor(WHITE);
+ cleardevice();
+ line(x1,y1,x2,y2);
+ line(x2,y2, x3,y3);
+ line(x3, y3, x1, y1);
+ getch();
+ setbkcolor(BLACK); //setting background color
+ printf("Enter rotation angle: ");
+ scanf("%lf", &angle);
+ setbkcolor(WHITE); //setting background color
+ //M_PI : Pi, the ratio of a circle’s circumference to its diameter.
+ c = cos(angle *M_PI/180);
+ s = sin(angle *M_PI/180);
+ x1 = floor(x1 * c + y1 * s);
+ y1 = floor(-x1 * s + y1 * c);
+ x2 = floor(x2 * c + y2 * s);
+ y2 = floor(-x2 * s + y2 * c);
+ x3 = floor(x3 * c + y3 * s);
+ y3 = floor(-x3 * s + y3 * c);
+ cleardevice();
+ line(x1, y1 ,x2, y2);
+ line(x2,y2, x3,y3);
+ line(x3, y3, x1, y1);
+ getch();
+ closegraph();
+} 
+
+//2D Scaling
+#include<stdio.h>
+#include<conio.h>
+#include<graphics.h>
+void fC(int s[][2], int p[][1])
+{
+ int temp[2][1] = { 0 };
+ for (int i = 0; i < 2; i++)
+ for (int j = 0; j < 1; j++)
+ for (int k = 0; k < 2; k++)
+ temp[i][j] += (s[i][k] * p[k][j]);
+ p[0][0] = temp[0][0];
+ p[1][0] = temp[1][0];
+}
+void scale(int x[], int y[], int sx, int sy)
+{
+ // Triangle before Scaling
+ line(x[0], y[0], x[1], y[1]);
+ line(x[1], y[1], x[2], y[2]);
+ line(x[2], y[2], x[0], y[0]);
+ // Initializing the Scaling Matrix.
+ int s[2][2] = { sx, 0, 0, sy };
+ int p[2][1];
+ for (int i = 0; i < 3; i++)
+ {
+ p[0][0] = x[i];
+ p[1][0] = y[i];
+ fC(s, p);
+ x[i] = p[0][0];
+ y[i] = p[1][0];
+ }
+ line(x[0], y[0], x[1], y[1]);
+ line(x[1], y[1], x[2], y[2]);
+ line(x[2], y[2], x[0], y[0]);
+}
+void main()
+{
+ int x[] = { 100, 200, 300 };
+ int y[] = { 200, 100, 200 };
+ int sx = 2, sy = 2;
+ int gd, gm;
+ detectgraph(&gd, &gm);
+ initgraph(&gd, &gm," ");
+ scale(x, y, sx,sy);
+ getch();
+} 
